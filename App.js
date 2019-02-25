@@ -1,14 +1,40 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View , Image , ScrollView , FlatList , TouchableHighlight} from 'react-native';
+import {StyleSheet, Text, View , Image , ScrollView , FlatList , TouchableHighlight, Button} from 'react-native';
 import { createStackNavigator, createAppContainer,createBottomTabNavigator} from 'react-navigation';
 import { DrawerNavigator } from 'react-navigation';
 import { StackNavigator } from 'react-navigation'
 import persons from './data/pic'
-import newPage from './newPage'
+import NewPage from './NewPage'
+import HeaderNavi from './HeaderNavi';
 
 
 
- class App extends Component{
+class App extends Component {
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerTitle: <HeaderNavi />,
+      headerRight: (
+        <Button
+          onPress={navigation.getParam('increaseCount')}
+          title="+1"
+          color="pink"
+        />
+      ),
+    };
+  };
+
+  componentDidMount() {
+    this.props.navigation.setParams({ increaseCount: this._increaseCount });
+  }
+
+  state = {
+    count: 0,
+  };
+
+  _increaseCount = () => {
+    this.setState({ count: this.state.count + 1 });
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -17,6 +43,7 @@ import newPage from './newPage'
           <View style={styles.header1}>
             <View style={styles.circle}>
             <Text style={{color:'white',fontWeight:'bold',fontSize:18}}>fizy</Text>
+            <Text style={{color:'white',fontWeight:'bold',fontSize:18}}>{this.state.count}</Text>
             </View>
             <TouchableHighlight
             onPress={() => this.props.navigation.navigate('NewPage')}
@@ -81,10 +108,10 @@ import newPage from './newPage'
   }
 }
 
-const RootStack = createStackNavigator(
+const AppNavigator  = createStackNavigator(
   {
     Home : App,
-    NewPage : newPage,
+    NewPage : NewPage,
   },
   {
     initialRouteName: 'Home',
@@ -174,5 +201,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default createAppContainer(RootStack);
+export default createAppContainer(AppNavigator );
 
