@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, FlatList, Button, Image, Animated, Easing} from 'react-native';
+import { View, Text, StyleSheet, FlatList, Button, Image, Animated, Easing,TouchableHighlight} from 'react-native';
+import { createStackNavigator, createAppContainer,createBottomTabNavigator,createDrawerNavigator} from 'react-navigation';
 import texts from './data/Text'
 import FlatListComponent from './FlatListComponent';
+import Facebook from './Facebook';
 
-export default class newPage extends Component {
+class NewPage extends Component {
 
    
 
@@ -26,16 +28,32 @@ export default class newPage extends Component {
                />
 
             <View style={{flexDirection:'row',justifyContent:'space-evenly',marginBottom:30,}}>
+                <TouchableHighlight onPress={() => this.props.navigation.navigate('Facebook')}>
                 <Image source={require('./photo/facebook.png')} style={styles.pic}/>
+                </TouchableHighlight>
                 <Image source={require('./photo/twitter.png')} style={styles.pic}/>
                 <Image source={require('./photo/instagram.png')} style={styles.pic}/>
+                <TouchableHighlight onPress={() => this.props.navigation.openDrawer()}>
                 <Image source={require('./photo/whatsapp.png')} style={styles.pic}/>
+                </TouchableHighlight>
             </View>
 
             </View>
         );
     }
 }
+
+const AppNavigator = createDrawerNavigator(
+
+    {
+        Back : NewPage,
+        Facebook : Facebook
+    },
+    
+    {
+        initialRouteName : 'Back'
+    }
+)
 
 const styles = StyleSheet.create({
     container: {
@@ -58,5 +76,7 @@ const styles = StyleSheet.create({
         
     }
 });
+
+export default createAppContainer(AppNavigator );
 
 // export default newPage;

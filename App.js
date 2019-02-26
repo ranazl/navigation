@@ -1,23 +1,47 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View , Image , ScrollView , FlatList , TouchableHighlight, Button} from 'react-native';
+import {StyleSheet, Text, View , Image , ScrollView , FlatList , TouchableHighlight, Button,TouchableOpacity,TextInput} from 'react-native';
 import { createStackNavigator, createAppContainer,createBottomTabNavigator} from 'react-navigation';
 import { DrawerNavigator } from 'react-navigation';
 import { StackNavigator } from 'react-navigation'
 import persons from './data/pic'
 import NewPage from './NewPage'
-import HeaderNavi from './HeaderNavi';
+import HeaderNavi from './HeaderNavi'
+import Facebook from './Facebook'
+import Modal from './Modal'
 
 
 
 class App extends Component {
+
+constructor(props){
+  super(props);
+
+  this.state={
+    text:'',
+    count:0
+  }
+}
+
+newText=(text)=>{
+  this.setState({
+    text:text
+  })
+}
+
   static navigationOptions = ({ navigation }) => {
     return {
-      headerTitle: <HeaderNavi />,
+      headerLeft: (
+        <Button
+          onPress={()=> navigation.navigate('Left')}
+          title="change"
+          color="#c2a216"
+        />
+      ),
       headerRight: (
         <Button
           onPress={navigation.getParam('increaseCount')}
-          title="+1"
-          color="pink"
+          title="Press"
+          color="#c2a216"
         />
       ),
     };
@@ -27,9 +51,7 @@ class App extends Component {
     this.props.navigation.setParams({ increaseCount: this._increaseCount });
   }
 
-  state = {
-    count: 0,
-  };
+
 
   _increaseCount = () => {
     this.setState({ count: this.state.count + 1 });
@@ -65,11 +87,16 @@ class App extends Component {
         <Text style={styles.mainText3}>listen to your favorit songs or watch video clips</Text>
       </View>  
 
-      <View style={styles.button}>
-        <Text style={styles.buttonText}>Get  Started</Text>
-      </View>
+      <TouchableOpacity style={styles.button} onPress={()=>this.props.navigation.navigate('Facebook',{text:this.state.text})}>
+      
+       <Text style={styles.buttonText}>Get  Started</Text>
+     
+      </TouchableOpacity>
 
-      <Text style={styles.more}>Learn more</Text>
+      <TextInput style={styles.buttonText} 
+        placeholder={'Learn more'}
+        onChangeText={this.newText.bind(this)}
+        />
 
     </View>
 
@@ -112,6 +139,11 @@ const AppNavigator  = createStackNavigator(
   {
     Home : App,
     NewPage : NewPage,
+    Facebook : Facebook,
+    Left : Modal
+  },
+  {
+    mode : 'modal'
   },
   {
     initialRouteName: 'Home',
@@ -177,8 +209,8 @@ const styles = StyleSheet.create({
     fontWeight:'bold',
   },
   buttonText:{
-    color:'#f1c918',
-    fontSize:18
+    color:'#fff',
+    fontSize:18,
   },
   footer: {
     flex:2,
