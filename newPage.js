@@ -4,10 +4,23 @@ import { createStackNavigator, createAppContainer,createBottomTabNavigator,creat
 import texts from './data/Text'
 import FlatListComponent from './FlatListComponent';
 import Facebook from './Facebook';
+import Menu from './Menu'
 
 class NewPage extends Component {
 
-   
+    static navigationOptions = {
+        drawerLabel: 'Profile',
+        drawerIcon:({tintColor})=>(
+            <Image
+                source={require('./photo/1.jpg')}
+                style={styles.icon}
+            />
+),
+    }
+
+    // toggleDrawer = () => {
+    //     this.props.navigationProps.toggleDrawer();
+    //   }
 
     render() {
 
@@ -33,7 +46,7 @@ class NewPage extends Component {
                 </TouchableHighlight>
                 <Image source={require('./photo/twitter.png')} style={styles.pic}/>
                 <Image source={require('./photo/instagram.png')} style={styles.pic}/>
-                <TouchableHighlight onPress={() => this.props.navigation.openDrawer()}>
+                <TouchableHighlight onPress={() => this.props.navigation.openDrawer('Menu')}>
                 <Image source={require('./photo/whatsapp.png')} style={styles.pic}/>
                 </TouchableHighlight>
             </View>
@@ -47,9 +60,12 @@ const AppNavigator = createDrawerNavigator(
 
     {
         Back : NewPage,
-        Facebook : Facebook
+        Facebook : Facebook,
+        Menu : Menu
     },
-    
+    {
+        drawerWidth : 200
+    },
     {
         initialRouteName : 'Back'
     }
@@ -74,7 +90,12 @@ const styles = StyleSheet.create({
         width:25,
         height:25,
         
-    }
+    },
+    icon: {
+        width: 40,
+        height: 40,
+        borderRadius:100,
+}
 });
 
 export default createAppContainer(AppNavigator );

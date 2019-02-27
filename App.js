@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View , Image , ScrollView , FlatList , TouchableHighlight, Button,TouchableOpacity,TextInput} from 'react-native';
-import { createStackNavigator, createAppContainer,createBottomTabNavigator} from 'react-navigation';
+import { createStackNavigator, createAppContainer,createBottomTabNavigator,createDrawerNavigator} from 'react-navigation';
 import { DrawerNavigator } from 'react-navigation';
 import { StackNavigator } from 'react-navigation'
 import persons from './data/pic'
@@ -8,6 +8,7 @@ import NewPage from './NewPage'
 import HeaderNavi from './HeaderNavi'
 import Facebook from './Facebook'
 import Modal from './Modal'
+import Menu from './Menu'
 
 
 
@@ -33,17 +34,26 @@ newText=(text)=>{
       headerLeft: (
         <Button
           onPress={()=> navigation.navigate('Left')}
-          title="change"
+          title="Sign in"
           color="#c2a216"
         />
       ),
+
       headerRight: (
-        <Button
-          onPress={navigation.getParam('increaseCount')}
-          title="Press"
-          color="#c2a216"
-        />
+        <TouchableHighlight
+        onPress={() => this.props.navigation.openDrawer()}
+        >
+           <Image source={require('./photo/menu.png')}/>
+        </TouchableHighlight>
       ),
+      
+      // headerRight: (
+      //   <Button
+      //     onPress={navigation.getParam('increaseCount')}
+      //     title="Press"
+      //     color="#c2a216"
+      //   />
+      // ),
     };
   };
 
@@ -65,7 +75,7 @@ newText=(text)=>{
           <View style={styles.header1}>
             <View style={styles.circle}>
             <Text style={{color:'white',fontWeight:'bold',fontSize:18}}>fizy</Text>
-            <Text style={{color:'white',fontWeight:'bold',fontSize:18}}>{this.state.count}</Text>
+            {/* <Text style={{color:'white',fontWeight:'bold',fontSize:18}}>{this.state.count}</Text> */}
             </View>
             <TouchableHighlight
             onPress={() => this.props.navigation.navigate('NewPage')}
@@ -135,12 +145,16 @@ newText=(text)=>{
   }
 }
 
-const AppNavigator  = createStackNavigator(
+const AppNavigator  = createDrawerNavigator(
   {
     Home : App,
     NewPage : NewPage,
     Facebook : Facebook,
     Left : Modal
+  },
+  {
+    drawerWidth : 200,
+    contentComponent:Menu
   },
   {
     mode : 'modal'
